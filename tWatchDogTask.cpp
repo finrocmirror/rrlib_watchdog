@@ -70,12 +70,16 @@ namespace watchdog
 //----------------------------------------------------------------------
 // tWatchDogTask constructors
 //----------------------------------------------------------------------
-tWatchDogTask::tWatchDogTask() :
-  dead_line(cTASK_DEACTIVED)
+tWatchDogTask::tWatchDogTask(bool register_task) :
+  dead_line(cTASK_DEACTIVED),
+  registered(register_task)
 {
-  tWatchDog& i = tWatchDog::GetInstance();
-  finroc::util::tLock lock(i.task_list_mutex);
-  i.task_list.push_back(this);
+  if (register_task)
+  {
+    tWatchDog& i = tWatchDog::GetInstance();
+    finroc::util::tLock lock(i.task_list_mutex);
+    i.task_list.push_back(this);
+  }
 }
 
 //----------------------------------------------------------------------
@@ -83,12 +87,15 @@ tWatchDogTask::tWatchDogTask() :
 //----------------------------------------------------------------------
 tWatchDogTask::~tWatchDogTask()
 {
-  tWatchDog& i = tWatchDog::GetInstance();
-  finroc::util::tLock lock(i.task_list_mutex);
-  i.task_list.erase(std::remove(i.task_list.begin(), i.task_list.end(), this), i.task_list.end()); // Remove this task from list
+  if (registered)
+  {
+    tWatchDog& i = tWatchDog::GetInstance();
+    finroc::util::tLock lock(i.task_list_mutex);
+    i.task_list.erase(std::remove(i.task_list.begin(), i.task_list.end(), this), i.task_list.end()); // Remove this task from list
+  }
 }
 
-void tWatchDogTask::Deactive()
+void tWatchDogTask::Deactivate()
 {
   dead_line = cTASK_DEACTIVED;
 }

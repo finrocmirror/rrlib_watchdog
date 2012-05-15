@@ -77,17 +77,20 @@ public:
   /*! Time value to indicate that a task is deactivated */
   static const int64_t cTASK_DEACTIVED = 0;
 
-  tWatchDogTask();
+  /*!
+   * \param register_task Register task? (If false, task will not be checked. This is possibly useful for deactivating tasks in release mode.)
+   */
+  tWatchDogTask(bool register_task = true);
 
   virtual ~tWatchDogTask();
 
   /*!
    * Deactivates task checking by watchdog. It can be enabled by calling SetDeadLine().
    */
-  void Deactive();
+  void Deactivate();
 
   /*!
-   * \return Current dead_line for this task. cTASK_DEACTIVED if it is inactive.
+   * \return Current deadline for this task. cTASK_DEACTIVED if it is inactive.
    */
   int64_t GetDeadLine() const
   {
@@ -120,7 +123,10 @@ protected:
 private:
 
   /*! Current task dead_line */
-  int64_t dead_line;
+  volatile int64_t dead_line;
+
+  /*! Has task been registered at watch dog thread? */
+  bool registered;
 };
 
 //----------------------------------------------------------------------

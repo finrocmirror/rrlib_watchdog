@@ -88,7 +88,7 @@ tWatchDog::~tWatchDog()
 typedef rrlib::util::tSingletonHolder<tWatchDog, rrlib::util::singleton::Longevity> tWatchDogInstance;
 static inline unsigned int GetLongevity(tWatchDog*)
 {
-  return 0xFFFFFFFF; // can be deleted early
+  return 0xFFFFFFFE; // can be deleted early
 }
 
 tWatchDog& tWatchDog::GetInstance()
