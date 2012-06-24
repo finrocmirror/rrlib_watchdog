@@ -32,7 +32,7 @@
 //----------------------------------------------------------------------
 // External includes (system with <>, local with "")
 //----------------------------------------------------------------------
-#include "rrlib/finroc_core_utils/tTime.h"
+#include "rrlib/time/time.h"
 
 //----------------------------------------------------------------------
 // Internal includes with ""
@@ -88,7 +88,7 @@ tWatchDog::~tWatchDog()
 typedef rrlib::util::tSingletonHolder<tWatchDog, rrlib::util::singleton::Longevity> tWatchDogInstance;
 static inline unsigned int GetLongevity(tWatchDog*)
 {
-  return 0xFFFFFFFE; // can be deleted early
+  return 0xFCCCCCC0; // must be deleted before tThread thread local
 }
 
 tWatchDog& tWatchDog::GetInstance()
@@ -104,12 +104,12 @@ void tWatchDog::Run()
 
     // check tasks
     {
-      int64_t cur_time = finroc::util::tTime::GetPrecise();
+      time::tTimestamp cur_time = rrlib::time::Now();
       finroc::util::tLock l(task_list_mutex);
       for (std::vector<tWatchDogTask*>::iterator it = task_list.begin(); it < task_list.end(); it++)
       {
-        int64_t dead_line = (*it)->GetDeadLine();
-        if (dead_line != tWatchDogTask::cTASK_DEACTIVED)
+        time::tTimestamp dead_line = (*it)->GetDeadLine();
+        if (dead_line != rrlib::time::cNO_TIME)
         {
           if (cur_time > dead_line)
           {
@@ -131,7 +131,7 @@ void tWatchDog::Run()
     else
     {
       // wait (TODO: currently 1 second hard-coded)
-      tThread::Sleep(1000);
+      tThread::Sleep(std::chrono::seconds(1), false);
     }
   }
 }

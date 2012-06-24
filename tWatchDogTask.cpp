@@ -71,7 +71,7 @@ namespace watchdog
 // tWatchDogTask constructors
 //----------------------------------------------------------------------
 tWatchDogTask::tWatchDogTask(bool register_task) :
-  dead_line(cTASK_DEACTIVED),
+  dead_line(time::cNO_TIME),
   registered(register_task)
 {
   if (register_task)
@@ -97,7 +97,7 @@ tWatchDogTask::~tWatchDogTask()
 
 void tWatchDogTask::Deactivate()
 {
-  dead_line = cTASK_DEACTIVED;
+  dead_line.Store(time::cNO_TIME);
 }
 
 //----------------------------------------------------------------------

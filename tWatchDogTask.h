@@ -40,6 +40,7 @@
 //----------------------------------------------------------------------
 // External includes (system with <>, local with "")
 //----------------------------------------------------------------------
+#include "rrlib/time/tAtomicTimestamp.h"
 
 //----------------------------------------------------------------------
 // Internal includes with ""
@@ -74,9 +75,6 @@ class tWatchDogTask
 //----------------------------------------------------------------------
 public:
 
-  /*! Time value to indicate that a task is deactivated */
-  static const int64_t cTASK_DEACTIVED = 0;
-
   /*!
    * \param register_task Register task? (If false, task will not be checked. This is possibly useful for deactivating tasks in release mode.)
    */
@@ -92,17 +90,17 @@ public:
   /*!
    * \return Current deadline for this task. cTASK_DEACTIVED if it is inactive.
    */
-  int64_t GetDeadLine() const
+  time::tTimestamp GetDeadLine() const
   {
-    return dead_line;
+    return dead_line.Load();
   }
 
   /*!
    * \param dead_line New deadline for this task.
    */
-  void SetDeadLine(int64_t dead_line)
+  void SetDeadLine(const time::tTimestamp& dead_line)
   {
-    this->dead_line = dead_line;
+    this->dead_line.Store(dead_line);
   }
 
 //----------------------------------------------------------------------
@@ -123,7 +121,7 @@ protected:
 private:
 
   /*! Current task dead_line */
-  volatile int64_t dead_line;
+  rrlib::time::tAtomicTimestamp dead_line;
 
   /*! Has task been registered at watch dog thread? */
   bool registered;
