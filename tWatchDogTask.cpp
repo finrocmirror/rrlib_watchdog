@@ -77,7 +77,7 @@ tWatchDogTask::tWatchDogTask(bool register_task) :
   if (register_task)
   {
     tWatchDog& i = tWatchDog::GetInstance();
-    finroc::util::tLock lock(i.task_list_mutex);
+    rrlib::thread::tLock lock(i.task_list_mutex);
     i.task_list.push_back(this);
   }
 }
@@ -90,7 +90,7 @@ tWatchDogTask::~tWatchDogTask()
   if (registered)
   {
     tWatchDog& i = tWatchDog::GetInstance();
-    finroc::util::tLock lock(i.task_list_mutex);
+    rrlib::thread::tLock lock(i.task_list_mutex);
     i.task_list.erase(std::remove(i.task_list.begin(), i.task_list.end(), this), i.task_list.end()); // Remove this task from list
   }
 }

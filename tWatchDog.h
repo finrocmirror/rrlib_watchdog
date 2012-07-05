@@ -41,7 +41,7 @@
 //----------------------------------------------------------------------
 // External includes (system with <>, local with "")
 //----------------------------------------------------------------------
-#include "rrlib/finroc_core_utils/thread/tThread.h"
+#include "rrlib/thread/tThread.h"
 #include "rrlib/util/patterns/singleton.h"
 
 //----------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace watchdog
  * If they not complete or send a keep-alive signal until a specified dead-line,
  * the watchdog will notify the user and execute a custom action.
  */
-class tWatchDog : public finroc::util::tThread
+class tWatchDog : public rrlib::thread::tThread
 {
   friend class tWatchDogTask;
   friend class rrlib::util::singleton::CreateUsingNew<tWatchDog>;
@@ -106,7 +106,7 @@ private:
   std::vector<tWatchDogTask*> task_list;
 
   /*! Mutex for task list */
-  finroc::util::tMutex task_list_mutex;
+  rrlib::thread::tMutex task_list_mutex;
 };
 
 //----------------------------------------------------------------------

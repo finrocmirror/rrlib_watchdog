@@ -105,7 +105,7 @@ void tWatchDog::Run()
     // check tasks
     {
       time::tTimestamp cur_time = rrlib::time::Now();
-      finroc::util::tLock l(task_list_mutex);
+      rrlib::thread::tLock l(task_list_mutex);
       for (std::vector<tWatchDogTask*>::iterator it = task_list.begin(); it < task_list.end(); it++)
       {
         time::tTimestamp dead_line = (*it)->GetDeadLine();
