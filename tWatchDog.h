@@ -42,7 +42,7 @@
 // External includes (system with <>, local with "")
 //----------------------------------------------------------------------
 #include "rrlib/thread/tThread.h"
-#include "rrlib/util/patterns/singleton.h"
+#include "rrlib/design_patterns/singleton.h"
 
 //----------------------------------------------------------------------
 // Internal includes with ""
@@ -73,7 +73,7 @@ namespace watchdog
 class tWatchDog : public rrlib::thread::tThread
 {
   friend class tWatchDogTask;
-  friend class rrlib::util::singleton::CreateUsingNew<tWatchDog>;
+  friend class rrlib::design_patterns::singleton::CreateUsingNew<tWatchDog>;
 
 //----------------------------------------------------------------------
 // Public methods and typedefs

@@ -85,7 +85,7 @@ tWatchDog::~tWatchDog()
   Join();
 }
 
-typedef rrlib::util::tSingletonHolder<tWatchDog, rrlib::util::singleton::Longevity> tWatchDogInstance;
+typedef rrlib::design_patterns::tSingletonHolder<tWatchDog, rrlib::design_patterns::singleton::Longevity> tWatchDogInstance;
 static inline unsigned int GetLongevity(tWatchDog*)
 {
   return 0xFCCCCCC0; // must be deleted before tThread thread local
