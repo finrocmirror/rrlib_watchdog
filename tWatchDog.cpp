@@ -98,7 +98,7 @@ tWatchDog& tWatchDog::GetInstance()
 
 void tWatchDog::Run()
 {
-  while (!stop_signal)
+  while (!IsStopSignalSet())
   {
     tWatchDogTask* stuck = NULL;
 
@@ -124,7 +124,7 @@ void tWatchDog::Run()
     {
       stuck->HandleWatchdogAlert(); // Do this outside of list lock to avoid deadlocks from deleting tasks.
     }
-    else if (stop_signal)
+    else if (IsStopSignalSet())
     {
       break;
     }
@@ -134,11 +134,6 @@ void tWatchDog::Run()
       tThread::Sleep(std::chrono::seconds(1), false);
     }
   }
-}
-
-void tWatchDog::StopThread()
-{
-  stop_signal = true;
 }
 
 //----------------------------------------------------------------------
