@@ -90,7 +90,7 @@ public:
 //----------------------------------------------------------------------
 protected:
 
-  virtual void Run();
+  virtual void Run() override;
 
 //----------------------------------------------------------------------
 // Private fields and methods
