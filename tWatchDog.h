@@ -73,7 +73,7 @@ namespace watchdog
 class tWatchDog : public rrlib::thread::tThread
 {
   friend class tWatchDogTask;
-  friend class rrlib::design_patterns::singleton::CreateUsingNew<tWatchDog>;
+  friend struct rrlib::design_patterns::singleton::CreateUsingNew<tWatchDog>;
 
 //----------------------------------------------------------------------
 // Public methods and typedefs
